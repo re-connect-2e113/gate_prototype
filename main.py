@@ -18,7 +18,8 @@ wave = WaveClient(channel)
 # メッセージ紡ぐ関数
 def weave_message(message_data):
   # 届いたメッセージを確認
-  print(message_data['text'])
+  # print(message_data['text'])
+  wave.send_message('どーん！')
 
 # WAVEクライアントを起動し、メッセージ受信したときにメッセージを紡ぐ
 wave.lauch(weave_message)

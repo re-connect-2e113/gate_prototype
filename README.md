@@ -6,3 +6,5 @@
 
 - RABBITMQ_URL
   => メッセージを受け取るジョブキューのURL
+- WAVE_SERVER_URL
+  => WAVEサーバーのURL(貴方サイドで送るところと同じものを使います)
