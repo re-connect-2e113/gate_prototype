@@ -18,8 +18,8 @@ MorphogicNode = namedtuple('MorphogicNode', ('surface', 'feature', 'cost'))
 class MorphogicAnalizer:
   def __init__(self, engne_name):
     self.engine = MeCab.Tagger(
-        # "-Ochasen -d/usr/local/lib/mecab/dic/mecab-ipadic-neologd")
-        "-Ochasen -d/usr/local/lib/mecab/dic/ipadic")
+        "-Ochasen -d/usr/local/lib/mecab/dic/mecab-ipadic-neologd")
+        # "-Ochasen -d/usr/local/lib/mecab/dic/ipadic")
     # バグ対策 無いと UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte とか言われる
     self.engine.parse('')
 
