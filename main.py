@@ -5,6 +5,9 @@ from wave_client import WaveClient
 from functools import reduce
 import gensim
 import numpy
+import grpc
+from ngtd_pb2 import SearchRequest, Empty
+import ngtd_pb2_grpc
 from morphologic_analyzer import MorphogicAnalizer
 import conversation_loader
 
@@ -29,6 +32,10 @@ analyzer = MorphogicAnalizer('MeCab')
 # WAVEクライアントを作成
 wave = WaveClient(channel)
 
+# 事前に登録した受け答えのBotさん側のW2Vから入力されたW2Vで近傍検索するのに使うツールへのGRPCインタフェース
+NGT_URL = os.getenv('NGT_URL')
+ngt_grpc_channel = grpc.insecure_channel('{}:{}'.format(NGT_URL, 8200))
+ngt_grpc_stub = ngtd_pb2_grpc.NGTDStub(ngt_grpc_channel)
 
 # TODO: 本当はDBに入れておきたい
 CONVERSATION_CSV_PATH = os.getenv('CONVERSATION_CSV_PATH')
@@ -60,5 +67,12 @@ def weave_message(message_data):
   # 単位ベクトルにする
   sentence_vector = sentence_vector / numpy.linalg.norm(sentence_vector)
 
+  # NGTから近い文章を検索をしてくる
+  res = ngt_grpc_stub.Search(SearchRequest(vector = sentence_vector, size = 2, epsilon = 0.01))
+  mathed_messages = map(
+    lambda result: { 'bot_message': str(result.id, 'utf-8'), 'distance': result.distance },
+    res.result
+  )
+  mathed_messages = list(mathed_messages)
 # WAVEクライアントを起動し、メッセージ受信したときにメッセージを紡ぐ
 wave.lauch(weave_message)
