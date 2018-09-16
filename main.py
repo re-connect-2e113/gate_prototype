@@ -30,7 +30,8 @@ channel = connection.channel()
 analyzer = MorphogicAnalizer('MeCab')
 
 # WAVEクライアントを作成
-wave = WaveClient(channel)
+WAVE_SERVER_URL = os.getenv('WAVE_SERVER_URL', 'localhost:8080')
+wave = WaveClient(WAVE_SERVER_URL, channel)
 
 # 事前に登録した受け答えのBotさん側のW2Vから入力されたW2Vで近傍検索するのに使うツールへのGRPCインタフェース
 NGT_URL = os.getenv('NGT_URL')
