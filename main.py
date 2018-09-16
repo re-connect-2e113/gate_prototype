@@ -75,5 +75,57 @@ def weave_message(message_data):
     res.result
   )
   mathed_messages = list(mathed_messages)
+
+  ranged_messages = filter(
+    lambda message: message['distance'] <= 0.3,
+    mathed_messages
+  )
+  ranged_messages = list(ranged_messages)
+
+  if len(ranged_messages) < 1:
+    # 似ているやりとりがなかった時
+    return
+
+  response_messages = filter(
+    lambda conversation: conversation['bot_message'] == ranged_messages[0]['bot_message'],
+    conversations
+  )
+  response_messages = list(response_messages)
+
+  if len(ranged_messages) < 1:
+    # 予定している仕様的はありえないはずなのだけれど……
+    return
+
+  wave.send_message(response_messages[0]['her_message'])
+
 # WAVEクライアントを起動し、メッセージ受信したときにメッセージを紡ぐ
 wave.lauch(weave_message)
+  )
+  mathed_messages = list(mathed_messages)
+
+  ranged_messages = filter(
+    lambda message: message['distance'] <= 0.3,
+    mathed_messages
+  )
+  ranged_messages = list(ranged_messages)
+
+  if len(ranged_messages) < 1:
+    # 似ているやりとりがなかった時
+    return
+
+  response_messages = filter(
+    lambda conversation: conversation['bot_message'] == ranged_messages[0]['bot_message'],
+    conversations
+  )
+  response_messages = list(response_messages)
+
+  if len(ranged_messages) < 1:
+    # 予定している仕様的はありえないはずなのだけれど……
+    return
+
+  wave.send_message(response_messages[0]['her_message'])
+
+# WAVEクライアントを起動し、メッセージ受信したときにメッセージを紡ぐ
+wave.lauch(weave_message)
+
+print('起動しました')
