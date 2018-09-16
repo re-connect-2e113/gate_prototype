@@ -5,3 +5,4 @@ grpcio-tools==1.15.0
 mecab-python3==0.7
 numpy==1.15.1
 pika==0.12.0
+python-dotenv==0.9.1

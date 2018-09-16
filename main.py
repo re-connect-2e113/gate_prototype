@@ -6,11 +6,15 @@ from functools import reduce
 import gensim
 import numpy
 import grpc
+from dotenv import load_dotenv
 from ngtd_pb2 import SearchRequest, Empty
 import ngtd_pb2_grpc
 from morphologic_analyzer import MorphogicAnalizer
 import conversation_loader
 
+# 環境変数を.envファイルから設定
+DOT_ENV_PATH = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(DOT_ENV_PATH)
 # 受け答えのBotさん側発言のW2Vを作るのに使われたのと同じgensimモデル
 W2V_MODEL_PATH = os.getenv('W2V_MODEL_PATH')
 W2V_MODEL_DIMS = os.getenv('W2V_MODEL_DIMS')
@@ -73,33 +77,6 @@ def weave_message(message_data):
   mathed_messages = map(
     lambda result: { 'bot_message': str(result.id, 'utf-8'), 'distance': result.distance },
     res.result
-  )
-  mathed_messages = list(mathed_messages)
-
-  ranged_messages = filter(
-    lambda message: message['distance'] <= 0.3,
-    mathed_messages
-  )
-  ranged_messages = list(ranged_messages)
-
-  if len(ranged_messages) < 1:
-    # 似ているやりとりがなかった時
-    return
-
-  response_messages = filter(
-    lambda conversation: conversation['bot_message'] == ranged_messages[0]['bot_message'],
-    conversations
-  )
-  response_messages = list(response_messages)
-
-  if len(ranged_messages) < 1:
-    # 予定している仕様的はありえないはずなのだけれど……
-    return
-
-  wave.send_message(response_messages[0]['her_message'])
-
-# WAVEクライアントを起動し、メッセージ受信したときにメッセージを紡ぐ
-wave.lauch(weave_message)
   )
   mathed_messages = list(mathed_messages)
 
