@@ -172,3 +172,15 @@ ENV/
 *.csv
 
 
+
+# 会話定義ファイル
+*.csv
+
+
+
+# NGTのGRPCインタフェース
+ngtd.proto
+ngtd_pb2.py
+ngtd_pb2_grpc.py
+
+
