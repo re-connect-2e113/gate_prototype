@@ -3,6 +3,7 @@ import pika
 from urllib import parse as url_parse
 from wave_client import WaveClient
 import gensim
+import conversation_loader
 
 # 受け答えのBotさん側発言のW2Vを作るのに使われたのと同じgensimモデル
 W2V_MODEL_PATH = os.getenv('W2V_MODEL_PATH')
@@ -21,7 +22,13 @@ channel = connection.channel()
 # WAVEクライアントを作成
 wave = WaveClient(channel)
 
-# メッセージ紡ぐ関数
+
+# TODO: 本当はDBに入れておきたい
+CONVERSATION_CSV_PATH = os.getenv('CONVERSATION_CSV_PATH')
+# TODO: 本当は宛先情報から読み出したい
+PRECIOUS_NAME = os.getenv('PRECIOUS_NAME')
+conversations = conversation_loader.load(PRECIOUS_NAME, CONVERSATION_CSV_PATH)
+
 def weave_message(message_data):
   # 届いたメッセージを確認
   # print(message_data['text'])
