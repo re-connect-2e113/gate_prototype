@@ -1,6 +1,6 @@
 ###### Requirements with Version Specifiers ######`
 gensim==3.5.0
-grpcio==1.15.0
+grpcio==1.53.0
 grpcio-tools==1.15.0
 mecab-python3==0.7
 numpy==1.15.1
